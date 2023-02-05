@@ -1,0 +1,19 @@
+{
+  "name": "curso-api-rest-javascript-practico",
+  "version": "1.0.0",
+  "description": "Curso practico sobre el consumo de API REST con JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yorlingarcia/Curso-Api-rest-javaScript-practico.git"
+  },
+  "author": "Yorlin Garcia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yorlingarcia/Curso-Api-rest-javaScript-practico/issues"
+  },
+  "homepage": "https://github.com/yorlingarcia/Curso-Api-rest-javaScript-practico#readme"
+}
