@@ -147,9 +147,25 @@ async function getTrendingMovies() {
 
 async function getMovieById(id) {
   const { data: movie } = await api("movie/" + id);
+
+  const movieUrl = "https://image.tmdb.org/t/p/w300" + movie.poster_path;
+  headerSection.style.background = `linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.35) 19.27%,
+      rgba(0, 0, 0, 0) 29.17%
+    ),
+    url(${movieUrl})`;
+
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
   movieDetailScore.textContent = movie.vote_average;
 
   createCategories(movie.genres, movieDetailCategoriesList);
+  getRelatedMovieById(id);
+}
+
+async function getRelatedMovieById(id) {
+  const { data } = await api(`movie/${id}/recommendations`);
+  const relatedMovies = data.results;
+  createMovies(relatedMovies, relatedMoviesContainer);
 }
