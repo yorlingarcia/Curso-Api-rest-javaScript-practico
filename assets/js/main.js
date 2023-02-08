@@ -150,4 +150,6 @@ async function getMovieById(id) {
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
   movieDetailScore.textContent = movie.vote_average;
+
+  createCategories(movie.genres, movieDetailCategoriesList);
 }
