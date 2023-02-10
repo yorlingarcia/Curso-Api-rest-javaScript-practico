@@ -142,6 +142,7 @@ async function getMoviesByCategory(id) {
       with_genres: id,
     },
   });
+  maxPage = data.total_pages;
   //genericSection.innerHTML = "";
   createMovies(data.results, genericSection, { lazyLoad: true, clean: true });
   // const movies = data.results;
@@ -159,6 +160,25 @@ async function getMoviesByCategory(id) {
   //   genericSection.appendChild(movieContainer);
   // });
 }
+function getPaginatedMoviesBycategory(id) {
+  return async function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    const scrollIsBottom = scrollTop + clientHeight >= scrollHeight - 15;
+    const pageIsNotMax = page < maxPage;
+    if (scrollIsBottom && pageIsNotMax) {
+      page++;
+      const { data } = await api("discover/movie", {
+        params: {
+          with_genres: id,
+        },
+      });
+
+      const movies = data.results;
+      createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+    }
+  };
+}
 
 async function getMoviesBySearch(query) {
   const { data } = await api("search/movie", {
@@ -166,6 +186,7 @@ async function getMoviesBySearch(query) {
       query,
     },
   });
+  maxPage = data.total_pages;
   createMovies(data.results, genericSection);
 }
 
@@ -173,14 +194,14 @@ async function getTrendingMovies() {
   const { data } = await api("trending/movie/day");
   createMovies(data.results, genericSection);
   headerCategoryTitle.innerHTML = "Tendencias";
-
-  const btnLoadMore = document.createElement("button");
-  btnLoadMore.innerText = "Cargar mas";
-  btnLoadMore.addEventListener("click", getPaginatedTrendingMovies, {
-    lazyLoad: true,
-    clean: true,
-  });
-  genericSection.appendChild(btnLoadMore);
+  maxPage = data.total_pages;
+  // const btnLoadMore = document.createElement("button");
+  // btnLoadMore.innerText = "Cargar mas";
+  // btnLoadMore.addEventListener("click", getPaginatedTrendingMovies, {
+  //   lazyLoad: true,
+  //   clean: true,
+  // });
+  // genericSection.appendChild(btnLoadMore);
 }
 
 async function getMovieById(id) {
@@ -208,22 +229,48 @@ async function getRelatedMovieById(id) {
   createMovies(relatedMovies, relatedMoviesContainer);
 }
 
-let page = 1;
-
 async function getPaginatedTrendingMovies() {
-  page++;
-  const { data } = await api("trending/movie/day", {
-    params: {
-      page,
-    },
-  });
-  const movies = data.results;
-  createMovies(movies, genericSection, { lazyLoad: true, clean: false });
-  const btnLoadMore = document.createElement("button");
-  btnLoadMore.innerText = "Cargar mas";
-  btnLoadMore.addEventListener("click", getPaginatedTrendingMovies, {
-    lazyLoad: true,
-    clean: true,
-  });
-  genericSection.appendChild(btnLoadMore);
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  const scrollIsBottom = scrollTop + clientHeight >= scrollHeight - 15;
+  const pageIsNotMax = page < maxPage;
+  if (scrollIsBottom && pageIsNotMax) {
+    page++;
+    const { data } = await api("trending/movie/day", {
+      params: {
+        page,
+      },
+    });
+
+    const movies = data.results;
+    createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+    // const btnLoadMore = document.createElement("button");
+    // btnLoadMore.innerText = "Cargar mas";
+    // btnLoadMore.addEventListener("click", getPaginatedTrendingMovies, {
+    //   lazyLoad: true,
+    //   clean: true,
+    // });
+    // genericSection.appendChild(btnLoadMore);
+  }
+}
+
+function getPaginatedMoviesBySearch(query) {
+  return async function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    const scrollIsBottom = scrollTop + clientHeight >= scrollHeight - 15;
+    const pageIsNotMax = page < maxPage;
+    if (scrollIsBottom && pageIsNotMax) {
+      page++;
+      const { data } = await api("search/movie", {
+        params: {
+          query,
+          page,
+        },
+      });
+
+      const movies = data.results;
+      createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+    }
+  };
 }
