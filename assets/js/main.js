@@ -22,9 +22,7 @@ function createMovies(
   movies.forEach((movie) => {
     const movieContainer = document.createElement("div");
     movieContainer.classList.add("movie-container");
-    movieContainer.addEventListener("click", () => {
-      location.hash = "#movie=" + movie.id;
-    });
+
     const movieImg = document.createElement("img");
     movieImg.classList.add("movie-img");
     movieImg.setAttribute("alt", movie.title);
@@ -34,15 +32,26 @@ function createMovies(
         "https://i.blogs.es/886c06/color-24-rojo-turco-textoner/1366_2000.jpg"
       );
     });
+    movieImg.addEventListener("click", () => {
+      location.hash = "#movie=" + movie.id;
+    });
     movieImg.setAttribute(
       lazyLoad ? "data-img" : "src",
       "https://image.tmdb.org/t/p/w300" + movie.poster_path
     );
+    const movieButton = document.createElement("button");
+    movieButton.classList.add("movie-btn");
+    movieButton.addEventListener("click", () => {
+      movieButton.classList.toggle("movie-btn--liked");
+      // guardar pelicula en localStorage
+    });
+
     if (lazyLoad) {
       lazyLoader.observe(movieImg);
     }
 
     movieContainer.appendChild(movieImg);
+    movieContainer.appendChild(movieButton);
     container.appendChild(movieContainer);
   });
 }
