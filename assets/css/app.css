@@ -83,13 +83,21 @@ input::placeholder {
   font-family: var(--font-family-text);
 }
 
-button {
+button,
+select {
   background-color: var(--purple-dark-1);
   border: none;
   color: var(--purple-light-2);
   font-weight: var(--font-weight-text2);
   font-size: 14px;
   cursor: pointer;
+}
+
+select {
+  position: absolute;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 5px;
 }
 
 /* Shared */
@@ -260,7 +268,8 @@ footer {
   justify-content: space-between;
 }
 
-.trendingPreview-btn {
+.trendingPreview-btn,
+.selected-lang {
   border-radius: 8px;
   height: 32px;
   width: 72px;

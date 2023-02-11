@@ -62,9 +62,12 @@ function createMovies(
     );
     const movieButton = document.createElement("button");
     movieButton.classList.add("movie-btn");
+    likedMoviesList()[movie.id] &&
+      movieButton.classList.add("movie-btn--liked");
     movieButton.addEventListener("click", () => {
       movieButton.classList.toggle("movie-btn--liked");
       likeMovie(movie);
+      window.location.reload();
       // guardar pelicula en localStorage
     });
 
@@ -304,4 +307,13 @@ function getPaginatedMoviesBySearch(query) {
       createMovies(movies, genericSection, { lazyLoad: true, clean: false });
     }
   };
+}
+
+function getLikedMovies() {
+  const likedMovies = likedMoviesList();
+  const moviesArray = Object.values(likedMovies);
+  createMovies(moviesArray, likedMoviesListArticle, {
+    lazyLoad: true,
+    clean: true,
+  });
 }
