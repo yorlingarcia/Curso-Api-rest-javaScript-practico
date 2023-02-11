@@ -10,6 +10,27 @@ const api = axios.create({
 
 // aux
 
+function likedMoviesList() {
+  const item = JSON.parse(localStorage.getItem("liked_movies"));
+  let movies;
+  if (item) {
+    movies = item;
+  } else {
+    movies = {};
+  }
+  return movies;
+}
+
+function likeMovie(movie) {
+  const likedMovies = likedMoviesList();
+  if (likedMovies[movie.id]) {
+    likedMovies[movie.id] = undefined;
+  } else {
+    likedMovies[movie.id] = movie;
+  }
+  localStorage.setItem("liked_movies", JSON.stringify(likedMovies));
+}
+
 function createMovies(
   movies,
   container,
@@ -43,6 +64,7 @@ function createMovies(
     movieButton.classList.add("movie-btn");
     movieButton.addEventListener("click", () => {
       movieButton.classList.toggle("movie-btn--liked");
+      likeMovie(movie);
       // guardar pelicula en localStorage
     });
 
